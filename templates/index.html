@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDPredict | AI-Powered Economic Forecasting</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a2980;
+            --secondary: #26d0ce;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-glow {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 41, 128, 0.3);
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 41, 128, 0.4);
+        }
+
+        /* Mobile menu styles */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .mobile-menu.open {
+            max-height: 500px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .hamburger {
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Animated background for hero */
+        .hero-bg {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            z-index: -2;
+        }
+
+        .hero-bg::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Pulse animation for CTA */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+            }
+
+            70% {
+                transform: scale(1.02);
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans antialiased">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-chart-line text-2xl"></i>
+                    <span class="text-xl font-bold">GDPredict</span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#how-it-works" class="nav-link">How It Works</a>
+                    <a href="#testimonials" class="nav-link">Testimonials</a>
+                    <a href="/predict"
+                        class="bg-white text-blue-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition btn-glow">Try
+                        Now</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none hamburger">
+                    <span class="block w-6 h-0.5 bg-white mb-1 transition-all"></span>
+                    <span class="block w-6 h-0.5 bg-white mb-1 transition-all"></span>
+                    <span class="block w-6 h-0.5 bg-white transition-all"></span>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu md:hidden mt-4">
+                <div class="flex flex-col space-y-4 px-2 py-4">
+                    <a href="#features"
+                        class="nav-link text-white hover:text-gray-200 px-3 py-2 rounded-md">Features</a>
+                    <a href="#how-it-works" class="nav-link text-white hover:text-gray-200 px-3 py-2 rounded-md">How It
+                        Works</a>
+                    <a href="#testimonials"
+                        class="nav-link text-white hover:text-gray-200 px-3 py-2 rounded-md">Testimonials</a>
+                    <a href="/predict"
+                        class="bg-white text-blue-600 text-center px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition btn-glow mt-2">Try
+                        Now</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-bg text-white py-24">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">AI-Powered <span>Economic Forecasting</span></h1>
+            <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto opacity-90">Predict GDP per capita with 93% accuracy using
+                our advanced machine learning models and comprehensive economic analysis</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="/predict"
+                    class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition duration-300 btn-glow pulse-animation">Get
+                    Started</a>
+                <a href="#how-it-works"
+                    class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300">Learn
+                    More</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Powerful Features</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Our platform combines cutting-edge AI with comprehensive
+                    economic data for unparalleled forecasting accuracy</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-10">
+                <!-- Feature 1 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="text-5xl mb-6 feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Real-Time Predictions</h3>
+                    <p class="text-gray-600">Get instant GDP forecasts updated with the latest economic indicators and
+                        trends, with results delivered in seconds.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="text-5xl mb-6 feature-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">16 Key Indicators</h3>
+                    <p class="text-gray-600">Comprehensive analysis of population, industry, agriculture, and more for
+                        the most accurate modeling available.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="text-5xl mb-6 feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">AI-Powered Insights</h3>
+                    <p class="text-gray-600">Our ensemble of machine learning algorithms delivers 93% accurate
+                        predictions based on historical data patterns.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Three simple steps to accurate economic forecasting</p>
+            </div>
+            <div class="max-w-5xl mx-auto">
+                <!-- Step 1 -->
+                <div class="flex flex-col md:flex-row items-center mb-16">
+                    <div class="md:w-1/2 mb-8 md:mb-0 md:pr-10">
+                        <div
+                            class="gradient-bg text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mb-4">
+                            1</div>
+                        <h3 class="text-2xl font-bold mb-4">Input Economic Data</h3>
+                        <p class="text-gray-600 mb-4">Provide key indicators like population, industry percentages,
+                            literacy rates, and other socioeconomic factors through our intuitive interface.</p>
+                        <ul class="text-gray-600 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Simple form-based input</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>CSV/Excel upload option</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>API integration available</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                            alt="Data Input"
+                            class="rounded-xl shadow-lg w-full transform hover:scale-105 transition duration-500">
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex flex-col md:flex-row items-center mb-16">
+                    <div class="md:w-1/2 order-2 md:order-1">
+                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                            alt="AI Processing"
+                            class="rounded-xl shadow-lg w-full transform hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="md:w-1/2 mb-8 md:mb-0 md:pl-10 order-1 md:order-2">
+                        <div
+                            class="gradient-bg text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mb-4">
+                            2</div>
+                        <h3 class="text-2xl font-bold mb-4">AI Model Analysis</h3>
+                        <p class="text-gray-600 mb-4">Our trained Random Forest algorithm processes your data against
+                            historical patterns and economic relationships.</p>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <h4 class="font-bold text-gray-800 mb-2">Our AI Stack:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-white px-3 py-1 rounded-full text-sm shadow-sm">Random Forest</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-sm shadow-sm">XGBoost</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-sm shadow-sm">Neural Nets</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-sm shadow-sm">Time Series</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-8 md:mb-0 md:pr-10">
+                        <div
+                            class="gradient-bg text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mb-4">
+                            3</div>
+                        <h3 class="text-2xl font-bold mb-4">Get Your Prediction</h3>
+                        <p class="text-gray-600 mb-4">Receive an accurate GDP per capita forecast with confidence
+                            intervals and explanatory insights.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-chart-bar text-blue-600"></i>
+                                </div>
+                                <span class="text-gray-700">Interactive visualizations</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-file-download text-blue-600"></i>
+                                </div>
+                                <span class="text-gray-700">Exportable reports</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-bell text-blue-600"></i>
+                                </div>
+                                <span class="text-gray-700">Alert thresholds</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                            alt="Results"
+                            class="rounded-xl shadow-lg w-full transform hover:scale-105 transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Trusted by Economists Worldwide</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Hear what industry leaders say about our platform</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Dr. Jane Doe"
+                            class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold">Dr. Jane Doe</h4>
+                            <p class="text-gray-500 text-sm">Chief Economist, World Bank</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic mb-4">"GDPredict has transformed our economic modeling capabilities.
+                        The accuracy is unmatched in the industry and has become an essential tool for our global
+                        economic outlook reports."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Smith"
+                            class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold">John Smith</h4>
+                            <p class="text-gray-500 text-sm">Investment Director, BlackRock</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic mb-4">"We rely on GDPredict's forecasts for all our emerging market
+                        investment decisions. The platform's predictive accuracy has helped us outperform the market by
+                        15% this year alone."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Maria Garcia"
+                            class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold">Maria Garcia</h4>
+                            <p class="text-gray-500 text-sm">Finance Minister, Spain</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic mb-4">"The most sophisticated economic prediction tool available to
+                        governments today. The scenario modeling features have been particularly valuable for our policy
+                        planning."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="gradient-bg text-white py-24 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-900 to-teal-500"></div>
+        </div>
+        <div class="container mx-auto px-6 text-center relative">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Economic Analysis?</h2>
+            <p class="text-xl mb-10 max-w-2xl mx-auto opacity-90">Join leading governments, financial institutions, and
+                researchers who trust GDPredict for accurate economic forecasting</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="/predict"
+                    class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition duration-300 btn-glow">Start
+                    Predicting Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <i class="fas fa-chart-line text-2xl mr-3 text-blue-400"></i>
+                        <span class="text-xl font-bold">GDPredict</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">AI-powered economic forecasting for governments, researchers, and
+                        financial institutions.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Product</h4>
+                    <ul class="space-y-3">
+                        <li><a href="/predict" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Predict GDP</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Features</a></li>
+                        <li><a href="#how-it-works"
+                                class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> How It Works</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Pricing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Resources</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> API</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Case Studies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Blog</a></li>
+                    </ul>
+                </div>
+                <!-- <div>
+                    <h4 class="text-lg font-bold mb-4">Contact</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gray-400 mr-3 mt-1"></i>
+                            <span>contact@gdpredict.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone text-gray-400 mr-3 mt-1"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-gray-400 mr-3 mt-1"></i>
+                            <span>123 Economic Ave, San Francisco, CA 94107</span>
+                        </li>
+                    </ul>
+                </div> -->
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">&copy; 2023 GDPredict. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">Privacy Policy</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">Terms of Service</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', function () {
+            this.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+
+            // Toggle aria-expanded attribute
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.setAttribute('aria-hidden', isExpanded);
+        });
+
+        // Close mobile menu when clicking on a link
+        const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuButton.classList.remove('open');
+                mobileMenu.classList.remove('open');
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+                mobileMenu.setAttribute('aria-hidden', 'true');
+            });
+        });
+
+        // Smooth scrolling for all links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
